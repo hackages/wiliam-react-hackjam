@@ -149,3 +149,50 @@ test('should render multiple categories', () => {
         <button className={'px-3 md:px-6 py-3 block'}>Drama</button>,
     );
 });
+
+test('should set documentary category active when clicking on it', () => {
+    // Given
+    const categories: ICategory[] = [
+        { name: 'Documentary',},
+    ]
+    const component = shallow(<App categories={categories} movies={[]}/>);
+    const documentaryCategory = component.findWhere(element => element.text() === 'Documentary').find('li')
+
+    // When
+    documentaryCategory.simulate('click')
+
+    // Then
+    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block active'}>Documentary</button>);
+});
+
+test('should set Action category active when clicking on it', () => {
+    // Given
+    const categories: ICategory[] = [
+        { name: 'Action',},
+    ]
+    const component = shallow(<App categories={categories} movies={[]}/>);
+    const actionCategory = component.findWhere(element => element.text() === 'Action').find('li')
+
+    // When
+    actionCategory.simulate('click')
+
+    // Then
+    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block active'}>Action</button>);
+});
+
+test('default active category should be category: "All" (w/o click)', () => {
+    // Given
+    const categories: ICategory[] = [
+        { name: 'All',},
+        { name: 'Documentary',},
+        { name: 'Action',},
+    ]
+
+    // When
+    const component = shallow(<App categories={categories} movies={[]}/>);
+
+    // Then
+    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block active'}>All</button>);
+    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Documentary</button>);
+    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Action</button>);
+});
