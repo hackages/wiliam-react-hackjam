@@ -6,6 +6,7 @@ import 'jest-enzyme'
 import {Footer} from '../src/components/Footer';
 import {Header} from '../src/components/Header';
 import {Categories} from '../src/components/Categories';
+import {Movie} from '../src/components/Movie';
 
 const harryPotterAndThePhilosophersStoneMovie: IMovie = {
     id: 1,
@@ -23,29 +24,6 @@ const harryPotterAndTheChamberOfSecretsMovie: IMovie = {
     poster_path: '/posters/harry-potter-and-the-chamber-of-secrets',
 };
 
-test('App should render the movie title', () => {
-    // Given
-    const movies: IMovie[] = [harryPotterAndThePhilosophersStoneMovie]
-
-    // When
-    const component = shallow(<App categories={[]} movies={movies} genres={[]}/>);
-
-    // Then
-    expect(component).toContainReact(<h3 className="mb-5">Harry Potter and the Philosopher's Stone</h3>)
-});
-
-test('should render one movie title and poster', () => {
-    // Given
-    const movies: IMovie[] = [harryPotterAndTheChamberOfSecretsMovie]
-
-    // When
-    const component = shallow(<App categories={[]} movies={movies} genres={[]}/>);
-
-    // Then
-    expect(component).toContainReact(<h3 className="mb-5">Harry Potter and Chamber of Secrets</h3>)
-    expect(component).toContainReact(<img src={'/posters/harry-potter-and-the-chamber-of-secrets'}
-                                          alt={'Harry Potter and Chamber of Secrets'}/>)
-});
 
 test('should render multiples movies title and poster', () => {
     // Given
@@ -57,12 +35,8 @@ test('should render multiples movies title and poster', () => {
     const component = shallow(<App categories={[]} movies={movies} genres={[]}/>);
 
     // Then
-    expect(component).toContainReact(<h3 className="mb-5">Harry Potter and the Philosopher's Stone</h3>)
-    expect(component).toContainReact(<h3 className="mb-5">Harry Potter and Chamber of Secrets</h3>)
-    expect(component).toContainReact(<img src={'/posters/harry-potter-and-the-philosopher-s-stone'}
-                                                  alt={'Harry Potter and the Philosopher\'s Stone'}/>)
-    expect(component).toContainReact(<img src={'/posters/harry-potter-and-the-chamber-of-secrets'}
-                                                  alt={'Harry Potter and Chamber of Secrets'}/>)
+    expect(component).toContainReact(<Movie movie={harryPotterAndThePhilosophersStoneMovie} />)
+    expect(component).toContainReact(<Movie movie={harryPotterAndTheChamberOfSecretsMovie} />)
 });
 
 test('should filter the movies based on search terms (movie 1)', () => {
@@ -79,12 +53,8 @@ test('should filter the movies based on search terms (movie 1)', () => {
     header.searchCallback('chamber')
 
     // Then
-    expect(component).not.toContainReact(<h3 className="mb-5">Harry Potter and the Philosopher's Stone</h3>)
-    expect(component).toContainReact(<h3 className="mb-5">Harry Potter and Chamber of Secrets</h3>)
-    expect(component).not.toContainReact(<img src={'/posters/harry-potter-and-the-philosopher-s-stone'}
-                                              alt={'Harry Potter and the Philosopher\'s Stone'}/>)
-    expect(component).toContainReact(<img src={'/posters/harry-potter-and-the-chamber-of-secrets'}
-                                          alt={'Harry Potter and Chamber of Secrets'}/>)
+    expect(component).not.toContainReact(<Movie movie={harryPotterAndThePhilosophersStoneMovie} />)
+    expect(component).toContainReact(<Movie movie={harryPotterAndTheChamberOfSecretsMovie} />)
 });
 
 test('should filter the movies based on search terms (movie 2)', () => {
@@ -100,12 +70,8 @@ test('should filter the movies based on search terms (movie 2)', () => {
     header.searchCallback('stone')
 
     // Then
-    expect(component).toContainReact(<h3 className="mb-5">Harry Potter and the Philosopher's Stone</h3>)
-    expect(component).not.toContainReact(<h3 className="mb-5">Harry Potter and Chamber of Secrets</h3>)
-    expect(component).toContainReact(<img src={'/posters/harry-potter-and-the-philosopher-s-stone'}
-                                              alt={'Harry Potter and the Philosopher\'s Stone'}/>)
-    expect(component).not.toContainReact(<img src={'/posters/harry-potter-and-the-chamber-of-secrets'}
-                                          alt={'Harry Potter and Chamber of Secrets'}/>)
+    expect(component).toContainReact(<Movie movie={harryPotterAndThePhilosophersStoneMovie} />)
+    expect(component).not.toContainReact(<Movie movie={harryPotterAndTheChamberOfSecretsMovie} />)
 });
 
 
@@ -126,21 +92,23 @@ test('should category filter movies based on active filter', () => {
             name: "Drama",
         },
     ]
+    const titanicMovie = {
+        id: 597,
+        title: 'Titanic',
+        poster_path: '/kHXEpyfl6zqn8a6YuozZUujufXf.jpg',
+        genre_ids: [18, 10749, 53],
+        backdrop_path: '/fVcZErSWa7gyENuj8IWp8eAfCnL.jpg',
+    };
+    const thorMovie = {
+        id: 10195,
+        title: 'Thor',
+        poster_path: '/bIuOWTtyFPjsFDevqvF3QrD1aun.jpg',
+        genre_ids: [12, 14, 28],
+        backdrop_path: '/6UxFfo8K3vcihtUpX1ek2ucGeEZ.jpg',
+    };
     const movies: IMovie[] = [
-        {
-            id: 597,
-            title: 'Titanic',
-            poster_path: '/kHXEpyfl6zqn8a6YuozZUujufXf.jpg',
-            genre_ids: [18, 10749, 53],
-            backdrop_path: '/fVcZErSWa7gyENuj8IWp8eAfCnL.jpg',
-        },
-        {
-            id: 10195,
-            title: 'Thor',
-            poster_path: '/bIuOWTtyFPjsFDevqvF3QrD1aun.jpg',
-            genre_ids: [12, 14, 28],
-            backdrop_path: '/6UxFfo8K3vcihtUpX1ek2ucGeEZ.jpg',
-        },
+        titanicMovie,
+        thorMovie,
     ]
     const component = shallow(<App categories={categories} movies={movies} genres={genres}/>);
     const categoriesComponent = component.find(Categories).props();
@@ -149,8 +117,8 @@ test('should category filter movies based on active filter', () => {
     categoriesComponent.categoriesCallback('Drama')
 
     // Then
-    expect(component).toContainReact(<h3 className="mb-5">Titanic</h3>);
-    expect(component).not.toContainReact(<h3 className="mb-5">Thor</h3>);
+    expect(component).toContainReact(<Movie movie={titanicMovie} />);
+    expect(component).not.toContainReact(<Movie movie={thorMovie} />);
 });
 
 test('Footer should be present', () => {
