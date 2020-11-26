@@ -12,7 +12,6 @@ export function App({ categories, movies }: AppProps) {
   const [filteredMovies, setFilteredMovies] = useState(movies);
 
   useEffect(() => {
-    console.log('effect', 'inside the effect')
     setFilteredMovies(
       searchQuery.trim() !== '' && searchQuery.trim().length > 3
         ? movies.filter(movie => isMovieTitleContain(movie, searchQuery))
@@ -21,13 +20,9 @@ export function App({ categories, movies }: AppProps) {
   }, [movies, searchQuery, setSearchQuery]);
 
   const onSearchQueryChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('onSearchQueryChanged', e)
-    
     if (!e.target) {
       return;
     }
-
-    console.log('onSearchQueryChanged', 'passed the if')
 
     setSearchQuery(e.target.value);
   }, [setSearchQuery]);
