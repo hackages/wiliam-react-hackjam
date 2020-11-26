@@ -1,5 +1,6 @@
-import React from "react";
-import {ICategory, IMovie} from './types';
+import React, { useCallback, useEffect, useState } from "react";
+import { ICategory, IMovie } from "./types";
+import { isMovieTitleContain } from "./utils";
 
 interface AppProps {
   categories: ICategory[],
@@ -7,6 +8,30 @@ interface AppProps {
 }
 
 export function App({ categories, movies }: AppProps) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredMovies, setFilteredMovies] = useState(movies);
+
+  useEffect(() => {
+    console.log('effect', 'inside the effect')
+    setFilteredMovies(
+      searchQuery.trim() !== '' && searchQuery.trim().length > 3
+        ? movies.filter(movie => isMovieTitleContain(movie, searchQuery))
+        : movies
+    )
+  }, [movies, searchQuery, setSearchQuery]);
+
+  const onSearchQueryChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('onSearchQueryChanged', e)
+    
+    if (!e.target) {
+      return;
+    }
+
+    console.log('onSearchQueryChanged', 'passed the if')
+
+    setSearchQuery(e.target.value);
+  }, [setSearchQuery]);
+  
   return (
       <>
         {/* Start: Header Component */}
@@ -32,7 +57,8 @@ export function App({ categories, movies }: AppProps) {
                       name="Search"
                       placeholder="Search"
                       className="search"
-                      onChange={() => {}}
+                      value={searchQuery}
+                      onChange={onSearchQueryChanged}
                   />
                   <button type="submit" className="search-btn">
                     <img src="./image/search.svg" alt="search" />
@@ -93,7 +119,7 @@ export function App({ categories, movies }: AppProps) {
           <div className="movie-list py-20">
             <div className="container mx-auto">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-10">
-                {movies.map(movie => (
+              {filteredMovies.map(movie => (
                   <div key={movie.id} className="single-movie relative">
                     <img src={movie.poster_path} alt={movie.title} />
                     <div className="movie-content flex items-center justify-center text-center absolute w-full h-full inset-0 px-4">
