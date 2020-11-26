@@ -61,3 +61,45 @@ test('should render multiples movies title and poster', () => {
     expect(component).toContainReact(<img src={'/posters/harry-potter-and-the-chamber-of-secrets'}
                                                   alt={'Harry Potter and Chamber of Secrets'}/>)
 });
+
+test('should filter the movies based on search terms (movie 1)', () => {
+    // Given
+    const movies: IMovie[] = [
+        harryPotterAndThePhilosophersStoneMovie,
+        harryPotterAndTheChamberOfSecretsMovie,
+    ]
+    const component = shallow(<App categories={[]} movies={movies}/>);
+    const searchInput = component.find('input[role="search"]')
+
+    // When
+    searchInput.simulate('change', {target: {value: 'chamber'}})
+
+    // Then
+    expect(component).not.toContainReact(<h3 className="mb-5">Harry Potter and the Philosopher's Stone</h3>)
+    expect(component).toContainReact(<h3 className="mb-5">Harry Potter and Chamber of Secrets</h3>)
+    expect(component).not.toContainReact(<img src={'/posters/harry-potter-and-the-philosopher-s-stone'}
+                                              alt={'Harry Potter and the Philosopher\'s Stone'}/>)
+    expect(component).toContainReact(<img src={'/posters/harry-potter-and-the-chamber-of-secrets'}
+                                          alt={'Harry Potter and Chamber of Secrets'}/>)
+});
+
+test('should filter the movies based on search terms (movie 2)', () => {
+    // Given
+    const movies: IMovie[] = [
+        harryPotterAndThePhilosophersStoneMovie,
+        harryPotterAndTheChamberOfSecretsMovie,
+    ]
+    const component = shallow(<App categories={[]} movies={movies}/>);
+    const searchInput = component.find('input[role="search"]')
+
+    // When
+    searchInput.simulate('change', {target: {value: 'stone'}})
+
+    // Then
+    expect(component).toContainReact(<h3 className="mb-5">Harry Potter and the Philosopher's Stone</h3>)
+    expect(component).not.toContainReact(<h3 className="mb-5">Harry Potter and Chamber of Secrets</h3>)
+    expect(component).toContainReact(<img src={'/posters/harry-potter-and-the-philosopher-s-stone'}
+                                              alt={'Harry Potter and the Philosopher\'s Stone'}/>)
+    expect(component).not.toContainReact(<img src={'/posters/harry-potter-and-the-chamber-of-secrets'}
+                                          alt={'Harry Potter and Chamber of Secrets'}/>)
+});
