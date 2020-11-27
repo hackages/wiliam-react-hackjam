@@ -11,21 +11,29 @@ export function App({ categories, movies }: AppProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredMovies, setFilteredMovies] = useState(movies);
 
-  useEffect(() => {
-    setFilteredMovies(
-      searchQuery.trim() !== '' && searchQuery.trim().length > 3
-        ? movies.filter(movie => isMovieTitleContain(movie, searchQuery))
-        : movies
-    )
-  }, [movies, searchQuery, setSearchQuery]);
+  // TODO: Unbug this with jest-react-hooks-shallow so tests pass
+  // useEffect(() => {
+  //   setFilteredMovies(
+  //     searchQuery.trim() !== '' && searchQuery.trim().length > 2
+  //       ? movies.filter(movie => isMovieTitleContain(movie, searchQuery))
+  //       : movies
+  //   )
+  // }, [movies, searchQuery, setSearchQuery]);
 
   const onSearchQueryChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target) {
       return;
     }
 
-    setSearchQuery(e.target.value);
-  }, [setSearchQuery]);
+    const searchTerms = e.target.value;
+
+    setSearchQuery(searchTerms);
+    setFilteredMovies(
+      searchTerms.trim() !== '' && searchTerms.trim().length > 2
+        ? movies.filter(movie => isMovieTitleContain(movie, searchTerms))
+        : movies
+    )
+  }, [movies, setSearchQuery]);
   
   return (
       <>
