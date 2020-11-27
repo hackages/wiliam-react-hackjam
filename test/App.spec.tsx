@@ -5,6 +5,7 @@ import {shallow} from 'enzyme';
 import 'jest-enzyme'
 import {Footer} from '../src/components/Footer';
 import {Header} from '../src/components/Header';
+import {Categories} from '../src/components/Categories';
 
 const harryPotterAndThePhilosophersStoneMovie: IMovie = {
     id: 1,
@@ -107,98 +108,6 @@ test('should filter the movies based on search terms (movie 2)', () => {
                                           alt={'Harry Potter and Chamber of Secrets'}/>)
 });
 
-test('should render a category name', () => {
-    // Given
-    const categories: ICategory[] = [
-        { name: 'Documentary' },
-    ]
-    // When
-    const component = shallow(<App categories={categories} movies={[]} genres={[]}/>);
-
-    // Then
-    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Documentary</button>)
-});
-
-test('should render another category name', () => {
-    // Given
-    const categories: ICategory[] = [
-        { name: 'Action', },
-    ]
-    // When
-    const component = shallow(<App categories={categories} movies={[]} genres={[]}/>);
-
-    // Then
-    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Action</button>);
-});
-
-test('should render multiple categories', () => {
-    // Given
-    const categories: ICategory[] = [
-        { name: 'Documentary', },
-        { name: 'Action', },
-        { name: 'Drama', },
-    ]
-    // When
-    const component = shallow(<App categories={categories} movies={[]} genres={[]}/>);
-
-    // Then
-    expect(component).toContainReact(
-        <button className={'px-3 md:px-6 py-3 block'}>Documentary</button>,
-    );
-    expect(component).toContainReact(
-        <button className={'px-3 md:px-6 py-3 block'}>Action</button>,
-    );
-    expect(component).toContainReact(
-        <button className={'px-3 md:px-6 py-3 block'}>Drama</button>,
-    );
-});
-
-test('should set documentary category active when clicking on it', () => {
-    // Given
-    const categories: ICategory[] = [
-        { name: 'Documentary',},
-    ]
-    const component = shallow(<App categories={categories} movies={[]} genres={[]}/>);
-    const documentaryCategory = component.findWhere(element => element.text() === 'Documentary').find('li')
-
-    // When
-    documentaryCategory.simulate('click')
-
-    // Then
-    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block active'}>Documentary</button>);
-});
-
-test('should set Action category active when clicking on it', () => {
-    // Given
-    const categories: ICategory[] = [
-        { name: 'Action',},
-    ]
-    const component = shallow(<App categories={categories} movies={[]} genres={[]}/>);
-    const actionCategory = component.findWhere(element => element.text() === 'Action').find('li')
-
-    // When
-    actionCategory.simulate('click')
-
-    // Then
-    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block active'}>Action</button>);
-});
-
-test('default active category should be category: "All" (w/o click)', () => {
-    // Given
-    const categories: ICategory[] = [
-        { name: 'All',},
-        { name: 'Documentary',},
-        { name: 'Action',},
-    ]
-
-    // When
-    const component = shallow(<App categories={categories} movies={[]}  genres={[]}/>);
-
-    // Then
-    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block active'}>All</button>);
-    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Documentary</button>);
-    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Action</button>);
-});
 
 test('should category filter movies based on active filter', () => {
     // Given
@@ -234,10 +143,10 @@ test('should category filter movies based on active filter', () => {
         },
     ]
     const component = shallow(<App categories={categories} movies={movies} genres={genres}/>);
-    const dramaCategory = component.findWhere(element => element.text() === 'Drama').find('li')
+    const categoriesComponent = component.find(Categories).props();
 
     // When
-    dramaCategory.simulate('click')
+    categoriesComponent.categoriesCallback('Drama')
 
     // Then
     expect(component).toContainReact(<h3 className="mb-5">Titanic</h3>);
