@@ -3,6 +3,7 @@ import {App} from '../src/App';
 import {ICategory, IGenre, IMovie} from '../src/types';
 import {shallow} from 'enzyme';
 import 'jest-enzyme'
+import {Footer} from '../src/components/Footer';
 
 const harryPotterAndThePhilosophersStoneMovie: IMovie = {
     id: 1,
@@ -239,4 +240,15 @@ test('should category filter movies based on active filter', () => {
     // Then
     expect(component).toContainReact(<h3 className="mb-5">Titanic</h3>);
     expect(component).not.toContainReact(<h3 className="mb-5">Thor</h3>);
+});
+
+test('Footer should be present', () => {
+    // Given
+    const component = <App categories={[]} movies={[]} genres={[]} />;
+
+    // When
+    const renderedComponent = shallow(component)
+
+    // Then
+    expect(renderedComponent).toContainReact(<Footer  />)
 });
