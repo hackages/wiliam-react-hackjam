@@ -1,6 +1,6 @@
 import React from 'react';
 import {App} from '../src/App';
-import {IMovie} from '../src/types';
+import {ICategory, IMovie} from '../src/types';
 import {shallow} from 'enzyme';
 import 'jest-enzyme'
 
@@ -102,4 +102,50 @@ test('should filter the movies based on search terms (movie 2)', () => {
                                               alt={'Harry Potter and the Philosopher\'s Stone'}/>)
     expect(component).not.toContainReact(<img src={'/posters/harry-potter-and-the-chamber-of-secrets'}
                                           alt={'Harry Potter and Chamber of Secrets'}/>)
+});
+
+test('should render a category name', () => {
+    // Given
+    const categories: ICategory[] = [
+        { name: 'Documentary' },
+    ]
+    // When
+    const component = shallow(<App categories={categories} movies={[]}/>);
+
+    // Then
+    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Documentary</button>)
+});
+
+test('should render another category name', () => {
+    // Given
+    const categories: ICategory[] = [
+        { name: 'Action', },
+    ]
+    // When
+    const component = shallow(<App categories={categories} movies={[]}/>);
+
+    // Then
+    expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Action</button>);
+});
+
+test('should render multiple categories', () => {
+    // Given
+    const categories: ICategory[] = [
+        { name: 'Documentary', },
+        { name: 'Action', },
+        { name: 'Drama', },
+    ]
+    // When
+    const component = shallow(<App categories={categories} movies={[]}/>);
+
+    // Then
+    expect(component).toContainReact(
+        <button className={'px-3 md:px-6 py-3 block'}>Documentary</button>,
+    );
+    expect(component).toContainReact(
+        <button className={'px-3 md:px-6 py-3 block'}>Action</button>,
+    );
+    expect(component).toContainReact(
+        <button className={'px-3 md:px-6 py-3 block'}>Drama</button>,
+    );
 });
