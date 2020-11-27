@@ -1,17 +1,21 @@
-import classNames from "classnames";
 import React, { useCallback, useState } from "react";
+import classNames from "classnames";
+
 import { ICategory, IMovie } from "./types";
-import { isMovieTitleContain } from "./utils";
+import { isMovieTitleContain, isMovieBelongsToCategory } from "./utils";
+import { genres } from "./mocks";
 
 interface AppProps {
   categories: ICategory[],
   movies: IMovie[],
 }
 
+const testMovieBelongsToCategory = isMovieBelongsToCategory(genres);
+
 export function App({ categories, movies }: AppProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredMovies, setFilteredMovies] = useState(movies);
   const [currentCategory, setCurrentCategory] = useState('All');
+  const [filteredMovies, setFilteredMovies] = useState(movies);
 
   // TODO: Unbug this with jest-react-hooks-shallow so tests pass
   // useEffect(() => {
@@ -30,20 +34,13 @@ export function App({ categories, movies }: AppProps) {
     const searchTerms = e.target.value;
 
     setSearchQuery(searchTerms);
-    setFilteredMovies(
-      searchTerms.trim() !== '' && searchTerms.trim().length > 2
-        ? movies.filter(movie => isMovieTitleContain(movie, searchTerms))
-        : movies
-    )
+    setFilteredMovies(movies.filter(movie => isMovieTitleContain(movie, searchTerms)));
   }, [movies, setSearchQuery]);
 
   const onCurrentCategoryChanged = useCallback((categoryName: string) => {
-    setCurrentCategory(
-      categoryName.trim() !== ''
-        ? categoryName
-        : categories[0].name
-    );
-  }, [categories, setCurrentCategory]);
+    setCurrentCategory(categoryName);
+    setFilteredMovies(movies.filter(movie => testMovieBelongsToCategory(movie, categoryName)));
+  }, [movies, setCurrentCategory, setFilteredMovies]);
   
   return (
       <>
