@@ -85,34 +85,13 @@ export function App({ categories, movies }: AppProps) {
           <div className="categories">
             <div className="container mx-auto text-center">
               <ul className="flex flex-row justify-center categories-list">
-                {/* Start: Category */}
-                <li key={'category-1'} onClick={() => {}}>
+              {categories.map(category => (
+                <li key={category.name} onClick={() => {}}>
                 <button className={'px-3 md:px-6 py-3 block'}>
-                  Category
+                  {category.name}
                 </button>
                 </li>
-                {/* End: Category */}
-                {/* Start: Category */}
-                <li key={'category-2'} onClick={() => {}}>
-                <button className={'px-3 md:px-6 py-3 block'}>
-                  Category
-                </button>
-                </li>
-                {/* End: Category */}
-                {/* Start: Category */}
-                <li key={'category-3'} onClick={() => {}}>
-                <button className={'px-3 md:px-6 py-3 block'}>
-                  Category
-                </button>
-                </li>
-                {/* End: Category */}
-                {/* Start: Category */}
-                <li key={'category-4'} onClick={() => {}}>
-                <button className={'px-3 md:px-6 py-3 block'}>
-                  Category
-                </button>
-                </li>
-                {/* End: Category */}
+              ))}
               </ul>
             </div>
           </div>
