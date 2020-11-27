@@ -4,7 +4,7 @@ import {ICategory, IGenre, IMovie} from '../src/types';
 import {shallow} from 'enzyme';
 import 'jest-enzyme'
 import {Footer} from '../src/components/Footer';
-import {Search} from '../src/components/Search';
+import {Header} from '../src/components/Header';
 
 const harryPotterAndThePhilosophersStoneMovie: IMovie = {
     id: 1,
@@ -71,11 +71,11 @@ test('should filter the movies based on search terms (movie 1)', () => {
         harryPotterAndTheChamberOfSecretsMovie,
     ]
     const component = shallow(<App categories={[]} movies={movies} genres={[]}/>);
-    const search = component.find(Search).props()
+    const header = component.find(Header).props()
 
 
     // When
-    search.searchCallback('chamber')
+    header.searchCallback('chamber')
 
     // Then
     expect(component).not.toContainReact(<h3 className="mb-5">Harry Potter and the Philosopher's Stone</h3>)
@@ -93,10 +93,10 @@ test('should filter the movies based on search terms (movie 2)', () => {
         harryPotterAndTheChamberOfSecretsMovie,
     ]
     const component = shallow(<App categories={[]} movies={movies} genres={[]}/>);
-    const search = component.find(Search).props()
+    const header = component.find(Header).props()
 
     // When
-    search.searchCallback('stone')
+    header.searchCallback('stone')
 
     // Then
     expect(component).toContainReact(<h3 className="mb-5">Harry Potter and the Philosopher's Stone</h3>)
