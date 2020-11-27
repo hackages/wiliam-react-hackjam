@@ -3,6 +3,7 @@ import classNames from "classnames";
 
 import { ICategory, IGenre, IMovie } from "./types";
 import { isMovieTitleContain, isMovieBelongsToCategory } from "./utils";
+import { Footer } from "./components/Footer";
 
 interface AppProps {
   categories: ICategory[],
@@ -132,13 +133,7 @@ export function App({ categories, genres, movies }: AppProps) {
           {/* End: MovieList Component */}
         </section>
 
-        {/* Start: Footer Component */}
-        <footer className="py-6 bg-gray-900">
-          <div className="container mx-auto text-center">
-            <p>Hackflix © 2020 Powered by Hackages</p>
-          </div>
-        </footer>
-        {/* End: Footer Component */}
+        <Footer />
       </>
   );
 }
