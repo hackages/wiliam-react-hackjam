@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ICategory, IMovie } from "./types";
 import { isMovieTitleContain } from "./utils";
 
