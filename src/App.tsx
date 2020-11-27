@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from "react";
-import classNames from "classnames";
 
 import { ICategory, IGenre, IMovie } from "./types";
 import { isMovieTitleContain, isMovieBelongsToCategory } from "./utils";
 
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
+import { Categories } from "./components/Categories";
 
 interface AppProps {
   categories: ICategory[],
@@ -14,7 +14,6 @@ interface AppProps {
 }
 
 export function App({ categories, genres, movies }: AppProps) {
-  const [currentCategory, setCurrentCategory] = useState('All');
   const [filteredMovies, setFilteredMovies] = useState(movies);
 
   const testMovieBelongsToCategory = isMovieBelongsToCategory(genres);
@@ -24,38 +23,18 @@ export function App({ categories, genres, movies }: AppProps) {
   }, [movies]);
 
   const onCurrentCategoryChanged = useCallback((categoryName: string) => {
-    setCurrentCategory(categoryName);
     setFilteredMovies(movies.filter(movie => testMovieBelongsToCategory(movie, categoryName)));
-  }, [movies, setCurrentCategory, setFilteredMovies, testMovieBelongsToCategory]);
+  }, [movies, setFilteredMovies, testMovieBelongsToCategory]);
   
   return (
       <>
         <Header searchCallback={onSearchQueryChanged} />
 
         <section className="wrapper">
-          {/* Start: Categories Component */}
-          <div className="categories">
-            <div className="container mx-auto text-center">
-              <ul className="flex flex-row justify-center categories-list">
-              {categories.map(category => (
-                <li
-                  key={category.name}
-                  onClick={onCurrentCategoryChanged.bind(null, category.name)}
-                >
-                  <button
-                    className={classNames({
-                      'px-3 md:px-6 py-3 block': true,
-                      active: currentCategory === category.name
-                    })}
-                  >
-                    {category.name}
-                  </button>
-                </li>
-              ))}
-              </ul>
-            </div>
-          </div>
-          {/* End: Categories Component */}
+          <Categories
+            categories={categories}
+            categoriesCallback={onCurrentCategoryChanged}
+          />
 
           {/* Start: MovieList Component */}
           <div className="movie-list py-20">
