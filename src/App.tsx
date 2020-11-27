@@ -11,7 +11,7 @@ interface AppProps {
 export function App({ categories, movies }: AppProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredMovies, setFilteredMovies] = useState(movies);
-  const [currentCategory, setCurrentCategory] = useState(categories[0].name);
+  const [currentCategory, setCurrentCategory] = useState('All');
 
   // TODO: Unbug this with jest-react-hooks-shallow so tests pass
   // useEffect(() => {
@@ -96,9 +96,11 @@ export function App({ categories, movies }: AppProps) {
             <div className="container mx-auto text-center">
               <ul className="flex flex-row justify-center categories-list">
               {categories.map(category => (
-                <li key={category.name} onClick={() => {}}>
+                <li
+                  key={category.name}
+                  onClick={onCurrentCategoryChanged.bind(null, category.name)}
+                >
                   <button
-                    onClick={onCurrentCategoryChanged.bind(null, category.name)}
                     className={classNames({
                       'px-3 md:px-6 py-3 block': true,
                       active: currentCategory === category.name
