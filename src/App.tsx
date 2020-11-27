@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { ICategory, IGenre, IMovie } from "./types";
 import { isMovieTitleContain, isMovieBelongsToCategory } from "./utils";
 import { Footer } from "./components/Footer";
+import { Search } from "./components/Search";
 
 interface AppProps {
   categories: ICategory[],
@@ -12,31 +13,14 @@ interface AppProps {
 }
 
 export function App({ categories, genres, movies }: AppProps) {
-  const [searchQuery, setSearchQuery] = useState('');
   const [currentCategory, setCurrentCategory] = useState('All');
   const [filteredMovies, setFilteredMovies] = useState(movies);
 
   const testMovieBelongsToCategory = isMovieBelongsToCategory(genres);
 
-  // TODO: Unbug this with jest-react-hooks-shallow so tests pass
-  // useEffect(() => {
-  //   setFilteredMovies(
-  //     searchQuery.trim() !== '' && searchQuery.trim().length > 2
-  //       ? movies.filter(movie => isMovieTitleContain(movie, searchQuery))
-  //       : movies
-  //   )
-  // }, [movies, searchQuery, setSearchQuery]);
-
-  const onSearchQueryChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target) {
-      return;
-    }
-
-    const searchTerms = e.target.value;
-
-    setSearchQuery(searchTerms);
+  const onSearchQueryChanged = useCallback((searchTerms: string) => {
     setFilteredMovies(movies.filter(movie => isMovieTitleContain(movie, searchTerms)));
-  }, [movies, setSearchQuery]);
+  }, [movies]);
 
   const onCurrentCategoryChanged = useCallback((categoryName: string) => {
     setCurrentCategory(categoryName);
@@ -61,20 +45,7 @@ export function App({ categories, genres, movies }: AppProps) {
               </a>
               <div className="flex justify-center sm:justify-end items-center text-right lg:w-1/2 sm:w-3/4 w-full">
                 {/* Start: Search Component */}
-                <form className="flex mr-5 lg:mr-10">
-                  <input
-                      role={'search'}
-                      type="text"
-                      name="Search"
-                      placeholder="Search"
-                      className="search"
-                      value={searchQuery}
-                      onChange={onSearchQueryChanged}
-                  />
-                  <button type="submit" className="search-btn">
-                    <img src="./image/search.svg" alt="search" />
-                  </button>
-                </form>
+                <Search searchCallback={onSearchQueryChanged} />
                 {/* End: Search Component */}
 
                 <div className="nav">
