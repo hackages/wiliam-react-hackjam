@@ -1,10 +1,12 @@
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { search } from '../store/reducers/movies/searchReducer';
+import { search, searchQuery } from '../store/reducers/movies/searchReducer';
+import { fetchMovies } from '../store/reducers/movies/moviesReducer';
 
 export function Search() {
     const dispatch = useDispatch();
+    const searchValue = useSelector(searchQuery);
     
     const onSearchInputChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target) {
@@ -13,6 +15,7 @@ export function Search() {
         
         // TODO: Debounce this.
         dispatch(search(e.target.value));
+        dispatch(fetchMovies());
     }, [dispatch]);
     
     return (
@@ -24,6 +27,7 @@ export function Search() {
                 placeholder="Search"
                 className="search"
                 onChange={onSearchInputChanged}
+                value={searchValue}
             />
             <button type="submit" className="search-btn">
             <img src="./image/search.svg" alt="search" />

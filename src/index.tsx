@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { App } from "./App";
-import {movies, categories, genres} from './mocks';
+
+import { App as HackflixApp } from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App movies={movies} categories={categories} genres={genres} />
+    <HackflixApp />
   </React.StrictMode>,
   document.getElementById("root")
 );

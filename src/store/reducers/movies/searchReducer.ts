@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppThunk, RootState } from '../../';
 
+import { fetchMovies } from './moviesReducer';
+
 export interface MoviesSearchState {
   searchQuery: string;
 };
@@ -30,6 +32,8 @@ export const search = (searchTerms: string): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(setSearchQuery(searchTerms));
+      // dispatch(fetchMovies());
+
       // TODO: 
       // If search terms in state.movies:
       //   Call action to filter movies
