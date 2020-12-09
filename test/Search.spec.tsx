@@ -5,7 +5,7 @@ import * as React from 'react';
 test('Search component should emit with a callback the search terms', () => {
     // Given
     const searchCallback = jest.fn()
-    const component = <Search searchCallback={searchCallback} />
+    const component = <Search searchValue={''} onSearchInputChanged={searchCallback} />
     const renderedComponent = shallow(component);
     const searchInput = renderedComponent.find('input[role="search"]')
 
@@ -14,7 +14,7 @@ test('Search component should emit with a callback the search terms', () => {
 
 
     // Then
-    expect(searchCallback).toHaveBeenCalledWith('some movie search terms');
+    expect(searchCallback).toHaveBeenCalledWith({ target: { value: 'some movie search terms' } });
 });
 
 

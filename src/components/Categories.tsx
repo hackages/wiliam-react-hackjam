@@ -14,9 +14,6 @@ export function Categories({
   currentCategory,
   onCurrentCategoryChanged
 }: IFilterProps) {
-
-  console.log('currentCategory', currentCategory)
-
   return (
     <div className="categories">
       <div className="container mx-auto text-center">
