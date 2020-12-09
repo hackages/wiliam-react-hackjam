@@ -14,7 +14,7 @@ test('Search component should emit with a callback the search terms', () => {
 
 
     // Then
-    expect(searchCallback).toHaveBeenCalledWith({ target: { value: 'some movie search terms' } });
+    expect(searchCallback).toHaveBeenCalledWith({ target: { value: 'some movie search terms' } }q);
 });
 
 
