@@ -4,6 +4,7 @@ import { IMovie } from "../types";
 interface IMovieProps {
   movie: IMovie;
 }
+
 export function Movie({ movie }: IMovieProps) {
   return (
     <div key={movie.id} className="single-movie relative">

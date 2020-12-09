@@ -1,53 +1,38 @@
-import React from "react";
-import { useSelector, useStore } from "react-redux";
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ICategory, IGenre } from "../types";
-// import { isMovieBelongsToCategory } from "../utils";
-
-import { RootState } from "../store";
-
+import * as MoviesSlice from "../store/movies/moviesSlice";
+import * as CategoriesSlice from "../store/categories/categoriesSlice";
 
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-// import { Categories } from "../components/Categories";
-import { Movie } from "../components/Movie";
-import { movies } from "../store/reducers/movies/moviesReducer";
-
-// interface AppProps {
-//   categories: ICategory[],
-//   genres: IGenre[],
-// }
+import { Categories } from "../components/Categories";
+import { MoviesList } from "../components/MovieList";
 
 export function MoviesView() {
-  const moviesList = useSelector(movies);
-
-  // const testMovieBelongsToCategory = isMovieBelongsToCategory(genres);
-
-  // const onCurrentCategoryChanged = useCallback((categoryName: string) => {
-  //   setFilteredMovies(movies.filter(movie => testMovieBelongsToCategory(movie, categoryName)));
-  // }, [movies, setFilteredMovies, testMovieBelongsToCategory]);
+  const dispatch = useDispatch();
+  const movies = useSelector(MoviesSlice.movies);
+  const categories = useSelector(CategoriesSlice.categories);
+  const currentCategory = useSelector(MoviesSlice.currentCategory);
+  
+  const onCurrentCategoryChanged = useCallback((categoryName: string) => {
+    dispatch(MoviesSlice.setCurrentCategory(categoryName));
+    dispatch(MoviesSlice.filterMoviesByCategory());
+  }, [dispatch]);
   
   return (
     <>
       <Header />
-
       <section className="wrapper">
-        {/* <Categories
+        <Categories
           categories={categories}
-          categoriesCallback={onCurrentCategoryChanged}
-        /> */}
-
-        {/* Start: MovieList Component */}
-        <div className="movie-list py-20">
-          <div className="container mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-10">
-              {moviesList.map(movie => <Movie key={movie.id} movie={movie} />)}
-            </div>
-          </div>
-        </div>
-        {/* End: MovieList Component */}
+          currentCategory={currentCategory}
+          onCurrentCategoryChanged={onCurrentCategoryChanged}
+        />
+        <MoviesList
+          movies={movies}
+        />
       </section>
-
       <Footer />
     </>
   );

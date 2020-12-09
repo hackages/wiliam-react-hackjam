@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AppThunk, RootState } from '../../';
-
-import { fetchMovies } from './moviesReducer';
+import { AppThunk, RootState } from '..';
+import * as MoviesSlice from './moviesSlice';
 
 export interface MoviesSearchState {
   searchQuery: string;
@@ -18,7 +17,10 @@ const moviesSearchSlice = createSlice({
   initialState,
   reducers: {
     setSearchQuery(state, action: PayloadAction<string>) {
-      state.searchQuery = action.payload;
+      return {
+        ...state,
+        searchQuery: action.payload,
+      };
     }
   }
 });
@@ -32,7 +34,11 @@ export const search = (searchTerms: string): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(setSearchQuery(searchTerms));
-      // dispatch(fetchMovies());
+      dispatch(MoviesSlice.filterMoviesBySearchTerms());
+
+      if (searchTerms.trim() === '') {
+        dispatch(MoviesSlice.filterMoviesByCategory());
+      }
 
       // TODO: 
       // If search terms in state.movies:
