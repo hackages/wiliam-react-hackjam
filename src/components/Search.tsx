@@ -1,14 +1,19 @@
 import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
-export function Search({searchCallback}: { searchCallback: (searchTerms: string) => void }) {
+import { search } from '../store/reducers/movies/searchReducer';
+
+export function Search() {
+    const dispatch = useDispatch();
+    
     const onSearchInputChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target) {
             return;
         }
-
-        const searchTerms = e.target.value;
-        searchCallback(searchTerms);
-    }, [searchCallback]);
+        
+        // TODO: Debounce this.
+        dispatch(search(e.target.value));
+    }, [dispatch]);
     
     return (
         <form className="flex mr-5 lg:mr-10">
@@ -25,4 +30,4 @@ export function Search({searchCallback}: { searchCallback: (searchTerms: string)
             </button>
         </form>
     );
-}
+};

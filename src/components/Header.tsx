@@ -1,7 +1,7 @@
 import React from "react";
 import { Search } from "./Search";
 
-export function Header({searchCallback}: { searchCallback: (searchTerms: string) => void }) {
+export function Header() {
     return (
         <header className="py-10">
           <div className="container mx-auto">
@@ -18,7 +18,7 @@ export function Header({searchCallback}: { searchCallback: (searchTerms: string)
               </a>
               <div className="flex justify-center sm:justify-end items-center text-right lg:w-1/2 sm:w-3/4 w-full">
                 {/* Start: Search Component */}
-                <Search searchCallback={searchCallback} />
+                <Search />
                 {/* End: Search Component */}
 
                 <div className="nav">

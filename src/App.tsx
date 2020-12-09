@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from "react";
+import { Provider } from "react-redux";
 
 import { ICategory, IGenre, IMovie } from "./types";
-import { isMovieTitleContain, isMovieBelongsToCategory } from "./utils";
+import { isMovieBelongsToCategory } from "./utils";
+
+import { store } from "./store";
 
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
@@ -18,17 +21,13 @@ export function App({ categories, genres, movies }: AppProps) {
 
   const testMovieBelongsToCategory = isMovieBelongsToCategory(genres);
 
-  const onSearchQueryChanged = useCallback((searchTerms: string) => {
-    setFilteredMovies(movies.filter(movie => isMovieTitleContain(movie, searchTerms)));
-  }, [movies]);
-
   const onCurrentCategoryChanged = useCallback((categoryName: string) => {
     setFilteredMovies(movies.filter(movie => testMovieBelongsToCategory(movie, categoryName)));
   }, [movies, setFilteredMovies, testMovieBelongsToCategory]);
   
   return (
-      <>
-        <Header searchCallback={onSearchQueryChanged} />
+      <Provider store={store}>
+        <Header />
 
         <section className="wrapper">
           <Categories
@@ -57,6 +56,6 @@ export function App({ categories, genres, movies }: AppProps) {
         </section>
 
         <Footer />
-      </>
+      </Provider>
   );
 }
