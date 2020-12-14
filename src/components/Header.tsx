@@ -1,23 +1,14 @@
-import React, { useCallback } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-
-import * as SearchSlice from "../store/movies/searchSlice";
-import * as MoviesSlice from "../store/movies/moviesSlice";
+import React from "react";
 
 import { Logo } from "./Logo";
 import { Search } from "./Search";
 
-export function Header() {
-  const dispatch = useDispatch();
-  const searchValue = useSelector(SearchSlice.searchQuery);
+interface IHeaderProps {
+  searchValue: string;
+  onSearchInputChanged: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-  // FIXME: Debounce this method if search results are large (140ms).
-  const onSearchInputChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target) return;    
-    dispatch(SearchSlice.search(e.target.value));
-    dispatch(MoviesSlice.filterMoviesBySearchTerms());
-  }, [dispatch]);
-
+export function Header({ searchValue, onSearchInputChanged }: IHeaderProps) {
   return (
     <header className="py-10">
       <div className="container mx-auto">

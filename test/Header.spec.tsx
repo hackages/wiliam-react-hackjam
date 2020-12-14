@@ -10,7 +10,7 @@ test('header should contains search component with callback', () => {
     const searchCallback = jest.fn()
 
     // When
-    const renderedComponent = shallow(<Header />);
+    const renderedComponent = shallow(<Header searchValue={''} onSearchInputChanged={searchCallback} />);
 
     // Then
     expect(renderedComponent).toContainReact(<Search onSearchInputChanged={searchCallback} searchValue={''} />);
@@ -21,7 +21,7 @@ test('header component should be a HTML header', () => {
     // Given
 
     // When
-    const component = shallow(<Header  />);
+    const component = shallow(<Header searchValue={''} onSearchInputChanged={() => null} />);
 
     // Then
     expect(component).toContainMatchingElement('header');

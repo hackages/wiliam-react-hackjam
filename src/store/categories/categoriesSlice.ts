@@ -10,7 +10,7 @@ export interface CategoriesState {
 };
 
 const initialState: CategoriesState = {
-  categories: categoriesMock,
+  categories: [],
 };
 
 // Slice creation (reducers)
@@ -30,6 +30,10 @@ const categoriesSlice = createSlice({
 // Actions
 export const { setCategories } = categoriesSlice.actions;
 export const categoriesReducer = categoriesSlice.reducer;
+
+// Action creators
+export const fetchCategories = (): AppThunk =>
+  (dispatch) => dispatch(setCategories(categoriesMock));
 
 // Selectors
 export const categories = (state: RootState) => state.categories.categories;

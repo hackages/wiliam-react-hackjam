@@ -3,17 +3,17 @@ import classNames from 'classnames';
 
 import { ICategory } from '../types';
 
-interface IFilterProps {
+interface ICategoriesProps {
   categories: ICategory[];
-  currentCategory: string;
-  onCurrentCategoryChanged: Function;
+  activeCategory: string;
+  onCategoryClicked: (categoryName: string) => void;
 }
 
 export function Categories({
   categories,
-  currentCategory,
-  onCurrentCategoryChanged
-}: IFilterProps) {
+  activeCategory,
+  onCategoryClicked
+}: ICategoriesProps) {
   return (
     <div className="categories">
       <div className="container mx-auto text-center">
@@ -21,12 +21,12 @@ export function Categories({
         {categories.map(category => (
           <li
             key={category.name}
-            onClick={onCurrentCategoryChanged.bind(null, category.name)}
+            onClick={onCategoryClicked.bind(null, category.name)}
           >
             <button
               className={classNames({
                 'px-3 md:px-6 py-3 block': true,
-                active: currentCategory === category.name
+                active: activeCategory === category.name
               })}
             >
               {category.name}

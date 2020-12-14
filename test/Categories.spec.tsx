@@ -10,7 +10,7 @@ test('should render a category name', () => {
         { name: 'Documentary' },
     ]
     // When
-    const component = shallow(<Categories categories={categories} currentCategory={'All'} onCurrentCategoryChanged={jest.fn()}/>);
+    const component = shallow(<Categories categories={categories} activeCategory={'All'} onCategoryClicked={jest.fn()}/>);
 
     // Then
     expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Documentary</button>)
@@ -22,7 +22,7 @@ test('should render another category name', () => {
         { name: 'Action', },
     ]
     // When
-    const component = shallow(<Categories categories={categories} currentCategory={'All'} onCurrentCategoryChanged={jest.fn()}/>);
+    const component = shallow(<Categories categories={categories} activeCategory={'All'} onCategoryClicked={jest.fn()}/>);
 
     // Then
     expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block'}>Action</button>);
@@ -36,7 +36,7 @@ test('should render multiple categories', () => {
         { name: 'Drama', },
     ]
     // When
-    const component = shallow(<Categories categories={categories} currentCategory={'All'} onCurrentCategoryChanged={jest.fn()}/>);
+    const component = shallow(<Categories categories={categories} activeCategory={'All'} onCategoryClicked={jest.fn()}/>);
 
     // Then
     expect(component).toContainReact(
@@ -55,7 +55,7 @@ test('should set documentary category active when clicking on it', () => {
     const categories: ICategory[] = [
         { name: 'Documentary',},
     ]
-    const component = shallow(<Categories categories={categories} currentCategory={'Documentary'} onCurrentCategoryChanged={jest.fn()}/>);
+    const component = shallow(<Categories categories={categories} activeCategory={'Documentary'} onCategoryClicked={jest.fn()}/>);
     const documentaryCategory = component.findWhere(element => element.text() === 'Documentary').find('li')
 
     // When
@@ -70,7 +70,7 @@ test('should set Action category active when clicking on it', () => {
     const categories: ICategory[] = [
         { name: 'Action',},
     ]
-    const component = shallow(<Categories categories={categories} currentCategory={'Action'} onCurrentCategoryChanged={jest.fn()}/>);
+    const component = shallow(<Categories categories={categories} activeCategory={'Action'} onCategoryClicked={jest.fn()}/>);
     const actionCategory = component.findWhere(element => element.text() === 'Action').find('li')
 
     // When
@@ -89,7 +89,7 @@ test('default active category should be category: "All" (w/o click)', () => {
     ]
 
     // When
-    const component = shallow(<Categories categories={categories} currentCategory={'All'} onCurrentCategoryChanged={jest.fn()}/>);
+    const component = shallow(<Categories categories={categories} activeCategory={'All'} onCategoryClicked={jest.fn()}/>);
 
     // Then
     expect(component).toContainReact(<button className={'px-3 md:px-6 py-3 block active'}>All</button>);
@@ -105,7 +105,7 @@ test('should emit to the categoriesCallback the category selected', () => {
         { name: 'Comedy',},
     ]
     const categoriesCallback = jest.fn();
-    const component = shallow(<Categories categories={categories} currentCategory={'Comedy'} onCurrentCategoryChanged={categoriesCallback}/>);
+    const component = shallow(<Categories categories={categories} activeCategory={'Comedy'} onCategoryClicked={categoriesCallback}/>);
     const comedyCategory = component.findWhere(element => element.text() === 'Comedy').find('li')
 
     // When

@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppThunk, RootState } from '..';
-import { movies as moviesMock, genres as genresMock } from '../../mocks';
 import { IGenre, IMovie } from '../../types';
+import { movies as moviesMock, genres as genresMock } from '../../mocks';
 import { isMovieTitleContain, isMovieBelongsToCategory } from '../../utils';
 
 export interface MoviesState {
   movies: IMovie[];
   genres: IGenre[];
   currentCategory: string;
-}
+};
 
 const initialState: MoviesState = {
-  movies: moviesMock,
-  genres: genresMock,
+  movies: [],
+  genres: [],
   currentCategory: 'All',
 };
 
@@ -53,46 +53,26 @@ export const {
 } = moviesSlice.actions;
 
 // Async actions (thunk)
+export const fetchMovies = (): AppThunk =>
+  (dispatch) => dispatch(setMovies(moviesMock));
+
 export const fetchGenres = (): AppThunk =>
-  (dispatch) => dispatch(setGenres(genresMock));
-
-export const filterMoviesBySearchTerms = (): AppThunk => {
-  return async (dispatch, getState) => {
-    try {
-      const state = getState();
-      
-      const searchQuery = state.moviesSearch.searchQuery;
-      const filteredMovies = moviesMock
-        .filter(movie => isMovieTitleContain(movie, searchQuery));
-
-      // TODO: In the future this can fetch from API.
-      dispatch(setMovies(filteredMovies));
-    } catch (err) {
-      // TODO: Tell the user something went wrong
-      console.error(err);
-    }
-  }
-};
-
-export const filterMoviesByCategory = (): AppThunk => {
-  return (dispatch, getState) => {
-    try {
-
-      const state = getState();
-      
-      const currentCategory = state.movies.currentCategory;
-      const genres = state.movies.genres;
-      
-      const filteredMovies = moviesMock
-      .filter(movie => isMovieBelongsToCategory(genres)(movie, currentCategory));
-      
-      dispatch(setMovies(filteredMovies));
-    } catch (err) {
-      // TODO: Tell the user something went wrong
-    }
-  };
-};
+  (dispatch) => dispatch(setGenres(genresMock));  
 
 // Selectors
 export const movies = (state: RootState) => state.movies.movies;
 export const currentCategory = (state: RootState) => state.movies.currentCategory;
+
+export const filteredMovies = (state: RootState) => {
+  const searchQuery = state.moviesSearch.searchQuery;
+  const currentCategory = state.movies.currentCategory;
+  const genres = state.movies.genres;
+
+  if (searchQuery && searchQuery !== '') {
+    return state.movies.movies
+      .filter(movie => isMovieTitleContain(movie, searchQuery));
+  }
+
+  return state.movies.movies
+    .filter(movie => isMovieBelongsToCategory(genres)(movie, currentCategory));
+}
